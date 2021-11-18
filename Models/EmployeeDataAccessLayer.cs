@@ -35,17 +35,20 @@ namespace EmployeeADONet.Models
                         con.Open();
                         SqlDataReader reader = cmd.ExecuteReader();
 
-                        while (reader.Read())
+                        if (reader.HasRows)
                         {
-                            Employee employee = new Employee();
+                            while (reader.Read())
+                            {
+                                Employee employee = new Employee();
 
-                            employee.ID = Convert.ToInt32(reader["EmployeeID"]);
-                            employee.Name = reader["Name"].ToString();
-                            employee.Gender = reader["Gender"].ToString();
-                            employee.Department = reader["Department"].ToString();
-                            employee.City = reader["City"].ToString();
+                                employee.ID = Convert.ToInt32(reader["EmployeeID"]);
+                                employee.Name = reader["Name"].ToString();
+                                employee.Gender = reader["Gender"].ToString();
+                                employee.Department = reader["Department"].ToString();
+                                employee.City = reader["City"].ToString();
 
-                            employeeslist.Add(employee);
+                                employeeslist.Add(employee);
+                            }
                         }
 
                         con.Close();
@@ -106,48 +109,48 @@ namespace EmployeeADONet.Models
                         cmd.CommandType = CommandType.StoredProcedure;
 
 
-                    //adding parameters
+                        //adding parameters
 
-                    SqlParameter parameter = new SqlParameter
-                    {
-                        ParameterName = "@Name",
-                        Value = employee.Name,
-                        SqlDbType = SqlDbType.VarChar,
-                        Size = 50
-                    };
-                    cmd.Parameters.Add(parameter);
+                        SqlParameter parameter = new SqlParameter
+                        {
+                            ParameterName = "@Name",
+                            Value = employee.Name,
+                            SqlDbType = SqlDbType.VarChar,
+                            Size = 50
+                        };
+                        cmd.Parameters.Add(parameter);
 
-                    parameter = new SqlParameter
-                    {
-                        ParameterName = "@Gender",
-                        Value = employee.Gender,
-                        SqlDbType = SqlDbType.VarChar
-                    };
-                    cmd.Parameters.Add(parameter);
+                        parameter = new SqlParameter
+                        {
+                            ParameterName = "@Gender",
+                            Value = employee.Gender,
+                            SqlDbType = SqlDbType.VarChar
+                        };
+                        cmd.Parameters.Add(parameter);
 
-                    parameter = new SqlParameter
-                    {
-                        ParameterName = "@Department",
-                        Value = employee.Department,
-                        SqlDbType = SqlDbType.VarChar
-                    };
-                    cmd.Parameters.Add(parameter);
+                        parameter = new SqlParameter
+                        {
+                            ParameterName = "@Department",
+                            Value = employee.Department,
+                            SqlDbType = SqlDbType.VarChar
+                        };
+                        cmd.Parameters.Add(parameter);
 
-                    parameter = new SqlParameter
-                    {
-                        ParameterName = "@City",
-                        SqlDbType = SqlDbType.VarChar,
-                        Size = 50,
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(parameter);
+                        parameter = new SqlParameter
+                        {
+                            ParameterName = "@City",
+                            SqlDbType = SqlDbType.VarChar,
+                            Size = 50,
+                            Direction = ParameterDirection.Output
+                        };
+                        cmd.Parameters.Add(parameter);
 
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
 
-                    return 1;
+                        return 1;
                     }
                 }
             }
